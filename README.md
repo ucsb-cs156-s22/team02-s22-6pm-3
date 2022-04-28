@@ -1,16 +1,16 @@
 [![codecov](https://codecov.io/gh/ucsb-cs156-s22/team02-s22-6pm-3/branch/main/graph/badge.svg?token=lqAxAfWUHY)](https://codecov.io/gh/ucsb-cs156-s22/team02-s22-6pm-3)
 # STARTER-team02
 
-TODO: Add a link to the deployed Heroku app for your team here, e.g.
-
-* <https://s22-7pm-3-team02.herokuapp.com>
+Heroku Deployments:
+* Production: <https://s22-6pm-3-team02.herokuapp.com/>
+* QA: <https://s22-6pm-3-team02-qa.herokuapp.com/>
 
 # Setup before running application
 
 Before running the application for the first time,
 you need to do the steps documented in [`docs/oauth.md`](docs/oauth.md).
 
-Otherwise, when you try to login for the first time, you 
+Otherwise, when you try to login for the first time, you
 will likely see an error such as:
 
 <img src="https://user-images.githubusercontent.com/1119017/149858436-c9baa238-a4f7-4c52-b995-0ed8bee97487.png" alt="Authorization Error; Error 401: invalid_client; The OAuth client was not found." width="400"/>
@@ -19,7 +19,7 @@ will likely see an error such as:
 
 * Open *two separate terminal windows*  
 * In the first window, start up the backend with:
-  ``` 
+  ```
   mvn spring-boot:run
   ```
 * In the second window:
