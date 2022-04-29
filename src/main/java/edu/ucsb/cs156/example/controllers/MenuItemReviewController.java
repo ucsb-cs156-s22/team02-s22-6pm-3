@@ -81,17 +81,18 @@ public class MenuItemReviewController extends ApiController {
         return savedReview;
     }
 
-    // @ApiOperation(value = "Delete a UCSBDiningCommons")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @DeleteMapping("")
-    // public Object deleteCommons(
-    //         @ApiParam("code") @RequestParam String code) {
-    //     UCSBDiningCommons commons = ucsbDiningCommonsRepository.findById(code)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, code));
+    /* DEL request - deletes a review with given id */
+    @ApiOperation(value = "Delete a MenuItemReview")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteReview(
+            @ApiParam("id") @RequestParam long id) {
+            MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
-    //     ucsbDiningCommonsRepository.delete(commons);
-    //     return genericMessage("UCSBDiningCommons with id %s deleted".formatted(code));
-    // }
+            menuItemReviewRepository.delete(review);
+        return genericMessage("MenuItemReview with id %s deleted".formatted(id));
+    }
 
     /* PUT request - updates an existing review */
     @ApiOperation(value = "Update a single review")
