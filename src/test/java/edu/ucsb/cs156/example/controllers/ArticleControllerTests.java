@@ -204,7 +204,7 @@ public class ArticleControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_can_delete_a_date() throws Exception {
+        public void admin_can_delete_a_article() throws Exception {
                 // arrange
 
                 LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
@@ -235,7 +235,7 @@ public class ArticleControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_tries_to_delete_non_existant_Article_and_gets_right_error_message()
+        public void admin_tries_to_delete_non_existant_article_and_gets_right_error_message()
                         throws Exception {
                 // arrange
 
@@ -262,18 +262,18 @@ public class ArticleControllerTests extends ControllerTestCase {
                 LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
 
                 Article articleOrig = Article.builder()
-                                .title("firstDayOfClasses")
-                                .url("20222")
-                                .explanation("explanation")
-                                .email("email")
+                                .title("first")
+                                .url("www.url2.com")
+                                .explanation("explanation1")
+                                .email("st@ucsb.edu")
                                 .dateAdded(ldt1)
                                 .build();
 
                 Article articleEdited = Article.builder()
-                                .title("firstDayOfClasses")
-                                .url("20222")
-                                .explanation("explanation")
-                                .email("email")
+                                .title("second")
+                                .url("www.url1.com")
+                                .explanation("explanation2")
+                                .email("ss@ucsb.edu")
                                 .dateAdded(ldt2)
                                 .build();
 
