@@ -55,4 +55,52 @@ public class ArticleController extends ApiController {
     }
 
     
+    @ApiOperation(value = "Create a new article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/post")
+    public Article postArticle(
+            @ApiParam("title") @RequestParam String title,
+            @ApiParam("url") @RequestParam String url,
+            @ApiParam("explanation") @RequestParam String explanation,
+            @ApiParam("email") @RequestParam String email,
+            @ApiParam("date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateAdded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
+            throws JsonProcessingException {
+
+        // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        // See: https://www.baeldung.com/spring-date-parameters
+
+        log.info("localDateTime={}", dateAdded);
+
+        Article article = new Article();
+        article.setTitle(title);
+        article.setUrl(url);
+        article.setExplanation(explanation);
+        article.setEmail(email);
+        article.setDateAdded(dateAdded);
+
+        Article savedArticle = articleRepository.save(article);
+
+        return savedArticle;
+    }
+    
+    @ApiOperation(value = "Update a single article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public Article updateArticle(
+            @ApiParam("id") @RequestParam Long id,
+            @RequestBody @Valid Article incoming) {
+
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
+
+        article.setTitle(incoming.getTitle());
+        article.setUrl(incoming.getUrl());
+        article.setExplanation(incoming.getExplanation());
+        article.setEmail(incoming.getEmail());
+        article.setDateAdded(incoming.getDateAdded());
+
+        articleRepository.save(article);
+
+        return article;
+    }
 } 
