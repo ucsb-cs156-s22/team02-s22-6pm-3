@@ -44,16 +44,17 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
-    // @ApiOperation(value = "Get a single commons")
-    // @PreAuthorize("hasRole('ROLE_USER')")
-    // @GetMapping("")
-    // public UCSBDiningCommons getById(
-    //         @ApiParam("code") @RequestParam String code) {
-    //     UCSBDiningCommons commons = ucsbDiningCommonsRepository.findById(code)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, code));
+    /* GET a single review */
+    @ApiOperation(value = "Get a single review")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public MenuItemReview getById(
+            @ApiParam("id") @RequestParam long id) {
+                MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
-    //     return commons;
-    // }
+        return review;
+    }
 
     /* Create Action - POST a new entry */
     @ApiOperation(value = "Create a new review")
@@ -80,38 +81,40 @@ public class MenuItemReviewController extends ApiController {
         return savedReview;
     }
 
-    // @ApiOperation(value = "Delete a UCSBDiningCommons")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @DeleteMapping("")
-    // public Object deleteCommons(
-    //         @ApiParam("code") @RequestParam String code) {
-    //     UCSBDiningCommons commons = ucsbDiningCommonsRepository.findById(code)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, code));
+    /* DEL request - deletes a review with given id */
+    @ApiOperation(value = "Delete a MenuItemReview")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteReview(
+            @ApiParam("id") @RequestParam long id) {
+            MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
-    //     ucsbDiningCommonsRepository.delete(commons);
-    //     return genericMessage("UCSBDiningCommons with id %s deleted".formatted(code));
-    // }
+            menuItemReviewRepository.delete(review);
+        return genericMessage("MenuItemReview with id %s deleted".formatted(id));
+    }
 
-    // @ApiOperation(value = "Update a single commons")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @PutMapping("")
-    // public UCSBDiningCommons updateCommons(
-    //         @ApiParam("code") @RequestParam String code,
-    //         @RequestBody @Valid UCSBDiningCommons incoming) {
+    /* PUT request - updates an existing review */
+    @ApiOperation(value = "Update a single review")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public MenuItemReview updateReview(
+            @ApiParam("id") @RequestParam long id,
+            @RequestBody @Valid MenuItemReview incoming) {
 
-    //     UCSBDiningCommons commons = ucsbDiningCommonsRepository.findById(code)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, code));
+            MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
 
-    //     commons.setName(incoming.getName());  
-    //     commons.setHasSackMeal(incoming.getHasSackMeal());
-    //     commons.setHasTakeOutMeal(incoming.getHasTakeOutMeal());
-    //     commons.setHasDiningCam(incoming.getHasDiningCam());
-    //     commons.setLatitude(incoming.getLatitude());
-    //     commons.setLongitude(incoming.getLongitude());
+        review.setItemId(incoming.getItemId());  
+        review.setReviewerEmail(incoming.getReviewerEmail());
+        review.setStars(incoming.getStars());
+        review.setDateReviewed(incoming.getDateReviewed());
+        review.setComments(incoming.getComments());
 
-    //     ucsbDiningCommonsRepository.save(commons);
 
-    //     return commons;
-    // }
+        menuItemReviewRepository.save(review);
+
+        return review;
+    }
 }
