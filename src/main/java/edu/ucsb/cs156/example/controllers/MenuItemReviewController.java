@@ -44,16 +44,17 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
-    // @ApiOperation(value = "Get a single commons")
-    // @PreAuthorize("hasRole('ROLE_USER')")
-    // @GetMapping("")
-    // public UCSBDiningCommons getById(
-    //         @ApiParam("code") @RequestParam String code) {
-    //     UCSBDiningCommons commons = ucsbDiningCommonsRepository.findById(code)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, code));
+    /* GET a single review */
+    @ApiOperation(value = "Get a single review")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public MenuItemReview getById(
+            @ApiParam("id") @RequestParam long id) {
+                MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
-    //     return commons;
-    // }
+        return review;
+    }
 
     /* Create Action - POST a new entry */
     @ApiOperation(value = "Create a new review")
