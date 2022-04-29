@@ -256,83 +256,82 @@ public class MenuItemReviewControllerTests extends ControllerTestCase {
         //         assertEquals("UCSBDiningCommons with id munger-hall not found", json.get("message"));
         // }
 
-        // @WithMockUser(roles = { "ADMIN", "USER" })
-        // @Test
-        // public void admin_can_edit_an_existing_commons() throws Exception {
-        //         // arrange
+        /* Tests for PUT success */
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_edit_an_existing_review() throws Exception {
+                // arrange
 
-        //         UCSBDiningCommons carrilloOrig = UCSBDiningCommons.builder()
-        //                         .name("Carrillo")
-        //                         .code("carrillo")
-        //                         .hasSackMeal(false)
-        //                         .hasTakeOutMeal(false)
-        //                         .hasDiningCam(true)
-        //                         .latitude(34.409953)
-        //                         .longitude(-119.85277)
-        //                         .build();
+                LocalDateTime ldt = LocalDateTime.parse("2022-04-28T14:35:00");
+                LocalDateTime newLdt = LocalDateTime.parse("2022-04-28T14:35:01");
+                MenuItemReview pizzaReview1Orig = MenuItemReview.builder()
+                                .itemId(1)
+                                .reviewerEmail("yl@ucsb.edu")
+                                .stars(2)
+                                .dateReviewed(ldt)
+                                .comments("pizzaReview1")
+                                .build();
 
-        //         UCSBDiningCommons carrilloEdited = UCSBDiningCommons.builder()
-        //                         .name("Carrillo Dining Hall")
-        //                         .code("carrillo")
-        //                         .hasSackMeal(true)
-        //                         .hasTakeOutMeal(true)
-        //                         .hasDiningCam(false)
-        //                         .latitude(34.409954)
-        //                         .longitude(-119.85278)
-        //                         .build();
+                MenuItemReview pizzaReview1Edited = MenuItemReview.builder()
+                                .itemId(2)
+                                .reviewerEmail("ml@ucsb.edu")
+                                .stars(5)
+                                .dateReviewed(newLdt)
+                                .comments("pizzaReview1 has been edited")
+                                .build();
 
-        //         String requestBody = mapper.writeValueAsString(carrilloEdited);
+                String requestBody = mapper.writeValueAsString(pizzaReview1Edited);
 
-        //         when(ucsbDiningCommonsRepository.findById(eq("carrillo"))).thenReturn(Optional.of(carrilloOrig));
+                when(menuItemReviewRepository.findById(eq(1L))).thenReturn(Optional.of(pizzaReview1Orig));
 
-        //         // act
-        //         MvcResult response = mockMvc.perform(
-        //                         put("/api/ucsbdiningcommons?code=carrillo")
-        //                                         .contentType(MediaType.APPLICATION_JSON)
-        //                                         .characterEncoding("utf-8")
-        //                                         .content(requestBody)
-        //                                         .with(csrf()))
-        //                         .andExpect(status().isOk()).andReturn();
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/MenuItemReview?id=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
 
-        //         // assert
-        //         verify(ucsbDiningCommonsRepository, times(1)).findById("carrillo");
-        //         verify(ucsbDiningCommonsRepository, times(1)).save(carrilloEdited); // should be saved with updated info
-        //         String responseString = response.getResponse().getContentAsString();
-        //         assertEquals(requestBody, responseString);
-        // }
+                // assert
+                verify(menuItemReviewRepository, times(1)).findById(1L);
+                verify(menuItemReviewRepository, times(1)).save(pizzaReview1Edited); // should be saved with updated info
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
 
-        // @WithMockUser(roles = { "ADMIN", "USER" })
-        // @Test
-        // public void admin_cannot_edit_commons_that_does_not_exist() throws Exception {
-        //         // arrange
+        /* Tests PUT where throws error cuz trying to edit a nonexisting review */
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_review_that_does_not_exist() throws Exception {
+                // arrange
 
-        //         UCSBDiningCommons editedCommons = UCSBDiningCommons.builder()
-        //                         .name("Munger Hall")
-        //                         .code("munger-hall")
-        //                         .hasSackMeal(false)
-        //                         .hasTakeOutMeal(false)
-        //                         .hasDiningCam(true)
-        //                         .latitude(34.420799)
-        //                         .longitude(-119.852617)
-        //                         .build();
+                LocalDateTime ldt = LocalDateTime.parse("2022-04-28T14:35:00");
+                MenuItemReview pizzaReview1Edited = MenuItemReview.builder()
+                                .itemId(1)
+                                .reviewerEmail("yl@ucsb.edu")
+                                .stars(5)
+                                .dateReviewed(ldt)
+                                .comments("pizzaReview1 has been edited")
+                                .build();
 
-        //         String requestBody = mapper.writeValueAsString(editedCommons);
+                String requestBody = mapper.writeValueAsString(pizzaReview1Edited);
 
-        //         when(ucsbDiningCommonsRepository.findById(eq("munger-hall"))).thenReturn(Optional.empty());
+                when(menuItemReviewRepository.findById(eq(1L))).thenReturn(Optional.empty());
 
-        //         // act
-        //         MvcResult response = mockMvc.perform(
-        //                         put("/api/ucsbdiningcommons?code=munger-hall")
-        //                                         .contentType(MediaType.APPLICATION_JSON)
-        //                                         .characterEncoding("utf-8")
-        //                                         .content(requestBody)
-        //                                         .with(csrf()))
-        //                         .andExpect(status().isNotFound()).andReturn();
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/MenuItemReview?id=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
 
-        //         // assert
-        //         verify(ucsbDiningCommonsRepository, times(1)).findById("munger-hall");
-        //         Map<String, Object> json = responseToJson(response);
-        //         assertEquals("UCSBDiningCommons with id munger-hall not found", json.get("message"));
+                // assert
+                verify(menuItemReviewRepository, times(1)).findById(1L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("MenuItemReview with id 1 not found", json.get("message"));
 
-        // }
+        }
 }

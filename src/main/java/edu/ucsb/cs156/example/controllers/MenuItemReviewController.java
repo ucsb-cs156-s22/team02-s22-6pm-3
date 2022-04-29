@@ -93,26 +93,27 @@ public class MenuItemReviewController extends ApiController {
     //     return genericMessage("UCSBDiningCommons with id %s deleted".formatted(code));
     // }
 
-    // @ApiOperation(value = "Update a single commons")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @PutMapping("")
-    // public UCSBDiningCommons updateCommons(
-    //         @ApiParam("code") @RequestParam String code,
-    //         @RequestBody @Valid UCSBDiningCommons incoming) {
+    /* PUT request - updates an existing review */
+    @ApiOperation(value = "Update a single review")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public MenuItemReview updateReview(
+            @ApiParam("id") @RequestParam long id,
+            @RequestBody @Valid MenuItemReview incoming) {
 
-    //     UCSBDiningCommons commons = ucsbDiningCommonsRepository.findById(code)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommons.class, code));
+            MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
 
-    //     commons.setName(incoming.getName());  
-    //     commons.setHasSackMeal(incoming.getHasSackMeal());
-    //     commons.setHasTakeOutMeal(incoming.getHasTakeOutMeal());
-    //     commons.setHasDiningCam(incoming.getHasDiningCam());
-    //     commons.setLatitude(incoming.getLatitude());
-    //     commons.setLongitude(incoming.getLongitude());
+        review.setItemId(incoming.getItemId());  
+        review.setReviewerEmail(incoming.getReviewerEmail());
+        review.setStars(incoming.getStars());
+        review.setDateReviewed(incoming.getDateReviewed());
+        review.setComments(incoming.getComments());
 
-    //     ucsbDiningCommonsRepository.save(commons);
 
-    //     return commons;
-    // }
+        menuItemReviewRepository.save(review);
+
+        return review;
+    }
 }
