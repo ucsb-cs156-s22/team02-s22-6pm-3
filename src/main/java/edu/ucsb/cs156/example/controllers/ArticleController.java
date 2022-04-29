@@ -54,7 +54,7 @@ public class ArticleController extends ApiController {
         return article;
     }
 
-
+    /*
     @ApiOperation(value = "Create a new article")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -114,5 +114,5 @@ public class ArticleController extends ApiController {
         articleRepository.save(article);
 
         return article;
-    }
-}
+    }*/
+} 
