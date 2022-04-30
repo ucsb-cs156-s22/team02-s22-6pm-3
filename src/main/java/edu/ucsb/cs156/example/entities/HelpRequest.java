@@ -28,4 +28,5 @@ public class HelpRequest {
     private LocalDateTime requestTime;
     private String explanation;
     private boolean solved;
+
 }
