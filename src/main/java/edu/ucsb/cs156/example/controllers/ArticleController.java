@@ -54,7 +54,7 @@ public class ArticleController extends ApiController {
         return article;
     }
 
-    /*
+    
     @ApiOperation(value = "Create a new article")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -82,7 +82,7 @@ public class ArticleController extends ApiController {
 
         return savedArticle;
     }
-
+    
     @ApiOperation(value = "Delete a Article")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
@@ -94,7 +94,7 @@ public class ArticleController extends ApiController {
         articleRepository.delete(article);
         return genericMessage("Article with id %s deleted".formatted(id));
     }
-
+    
     @ApiOperation(value = "Update a single article")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
@@ -114,5 +114,5 @@ public class ArticleController extends ApiController {
         articleRepository.save(article);
 
         return article;
-    }*/
+    }
 } 
