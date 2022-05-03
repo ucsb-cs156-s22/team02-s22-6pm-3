@@ -102,6 +102,26 @@ public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws E
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
 }
+@WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+                // arrange
+
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(1L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/UCSBDiningCommonsMenuItem?id=1"))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(eq(1L));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("UCSBDiningCommonsMenuItem with id 1 not found", json.get("message"));
+        }
+
 }
 
 
