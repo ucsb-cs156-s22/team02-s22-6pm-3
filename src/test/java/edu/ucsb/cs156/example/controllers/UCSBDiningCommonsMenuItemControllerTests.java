@@ -228,24 +228,24 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
         }
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_can_edit_an_existing_menu_item() throws Exception {
+        public void admin_can_edit_an_existing_menuitem() throws Exception {
                 // arrange
 
-                UCSBDiningCommonsMenuItem menuitem_orig = UCSBDiningCommonsMenuItem.builder()
-                                .name("Mac n Cheese Pizza")
-                                .diningCommonsCode("DLG")
-                                .station("Pizza corner")
-                                .build();
+                UCSBDiningCommonsMenuItem noodles_orig = UCSBDiningCommonsMenuItem.builder()
+                    .name("Dragon Noodles")
+                    .diningCommonsCode("Carrillo")
+                    .station("Euro")
+                    .build();
 
-                UCSBDiningCommonsMenuItem menuitem_edit = UCSBDiningCommonsMenuItem.builder()
-                                .name("Taco Pizza")
-                                .diningCommonsCode("Ortega")
-                                .station("Tomato town")
-                                .build();
+                UCSBDiningCommonsMenuItem noodles_edit = UCSBDiningCommonsMenuItem.builder()
+                    .name("Star Noodles")
+                    .diningCommonsCode("DLG")
+                    .station("Blue Plate")
+                    .build();
 
-                String requestBody = mapper.writeValueAsString(menuitem_edit);
+                String requestBody = mapper.writeValueAsString(noodles_edit);
 
-                when(ucsbDiningCommonsMenuItemRepository.findById(eq(1L))).thenReturn(Optional.of(menuitem_orig));
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(1L))).thenReturn(Optional.of(noodles_orig));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -258,7 +258,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
                 // assert
                 verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(1L);
-                verify(ucsbDiningCommonsMenuItemRepository, times(1)).save(menuitem_edit); // should be saved with updated info
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).save(noodles_edit); // should be saved with updated info
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(requestBody, responseString);
         }
