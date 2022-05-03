@@ -77,9 +77,9 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .andExpect(status().is(403)); // only admins can post
         }
 
-@WithMockUser(roles = { "USER" })
-@Test
-public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
 
         // arrange
 
@@ -101,8 +101,8 @@ public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws E
         String expectedJson = mapper.writeValueAsString(menuitem);
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
-}
-@WithMockUser(roles = { "USER" })
+        }
+        @WithMockUser(roles = { "USER" })
         @Test
         public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
 
@@ -120,6 +120,66 @@ public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws E
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("EntityNotFoundException", json.get("type"));
                 assertEquals("UCSBDiningCommonsMenuItem with id 1 not found", json.get("message"));
+        }
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void logged_in_user_can_get_all_ucsbdiningcommonsmenuitem() throws Exception {
+
+                // arrange
+
+            UCSBDiningCommonsMenuItem noodles = UCSBDiningCommonsMenuItem.builder()
+                                .name("Dragon Noodles")
+                                .diningCommonsCode("Carrillo")
+                                .station("Euro")
+                                .build();
+
+            UCSBDiningCommonsMenuItem pizza = UCSBDiningCommonsMenuItem.builder()
+                                .name("Cheese Pizza")
+                                .diningCommonsCode("DLG")
+                                .station("Pizza station")
+                                .build();
+
+            ArrayList<UCSBDiningCommonsMenuItem> menuItems = new ArrayList<>();
+            menuItems.addAll(Arrays.asList(noodles, pizza));
+
+            when(ucsbDiningCommonsMenuItemRepository.findAll()).thenReturn(menuItems);
+
+                // act
+            MvcResult response = mockMvc.perform(get("/api/UCSBDiningCommonsMenuItem/all"))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+
+            verify(ucsbDiningCommonsMenuItemRepository, times(1)).findAll();
+            String expectedJson = mapper.writeValueAsString(menuItems);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+     }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void an_admin_user_can_post_a_new_menuitem() throws Exception {
+                // arrange
+
+                UCSBDiningCommonsMenuItem noodles = UCSBDiningCommonsMenuItem.builder()
+                            .name("Dragon Noodles")
+                            .diningCommonsCode("Carrillo")
+                            .station("Euro")
+                            .build();
+
+                when(ucsbDiningCommonsMenuItemRepository.save(eq(noodles))).thenReturn(noodles);
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                post("/api/UCSBDiningCommonsMenuItem/post?name=Dragon Noodles&diningCommonsCode=Carrillo&station=Euro")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).save(noodles);
+                String expectedJson = mapper.writeValueAsString(noodles);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
         }
 
 }
