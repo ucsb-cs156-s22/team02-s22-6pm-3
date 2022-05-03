@@ -30,7 +30,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(controllers = UCSBDiningCommonsController.class)
+@WebMvcTest(controllers = UCSBDiningCommonsMenuItemController.class)
 @Import(TestConfig.class)
 public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase {
 
@@ -39,11 +39,15 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
         @MockBean
         UserRepository userRepository;
+
+        // Authorization tests for /api/UCSBDiningCommonsMenuItem/admin/all
+
         @Test
         public void logged_out_users_cannot_get_all() throws Exception {
                 mockMvc.perform(get("/api/UCSBDiningCommonsMenuItem/all"))
                                 .andExpect(status().is(403)); // logged out users can't get all
-        // Authorization tests for /api/ucsbdiningcommonsmenuitem/admin/all
+        }
+
         @WithMockUser(roles = { "USER" })
         @Test
         public void logged_in_users_can_get_all() throws Exception {
@@ -72,7 +76,6 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 mockMvc.perform(post("/api/UCSBDiningCommonsMenuItem/post"))
                                 .andExpect(status().is(403)); // only admins can post
         }
-// Tests with mocks for database actions
 
 @WithMockUser(roles = { "USER" })
 @Test
@@ -80,21 +83,21 @@ public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws E
 
         // arrange
 
-        UCSBDiningCommonsMenuItem menuitem = UCSBDiningCommons.builder()
+        UCSBDiningCommonsMenuItem menuitem = UCSBDiningCommonsMenuItem.builder()
                         .name("Dragon Noodles")
                         .diningCommonsCode("Carrillo")
                         .station("Euro")
                         .build();
 
-        when(ucsbDiningCommonsRepository.findById(eq(1L)).thenReturn(Optional.of(menuitem));
+        when(ucsbDiningCommonsMenuItemRepository.findById(eq(1L))).thenReturn(Optional.of(menuitem));
 
         // act
-        MvcResult response = mockMvc.perform(get("/api/ucsbdiningcommons?id=1"))
+        MvcResult response = mockMvc.perform(get("/api/UCSBDiningCommonsMenuItem?id=1"))
                         .andExpect(status().isOk()).andReturn();
 
         // assert
 
-        verify(ucsbDiningCommonsRepository, times(1)).findById(eq(1L));
+        verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(eq(1L));
         String expectedJson = mapper.writeValueAsString(menuitem);
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
