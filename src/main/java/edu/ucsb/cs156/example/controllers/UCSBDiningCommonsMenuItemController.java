@@ -42,7 +42,38 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
             return menuItem;
     }
+    @ApiOperation(value = "Create a new menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/post")
+    public UCSBDiningCommonsMenuItem postMenuItem(
+        @ApiParam("diningCommonsCode")@RequestParam String diningCommonsCode,
+        @ApiParam("name") @RequestParam String name,
+        @ApiParam("station") @RequestParam String station
+        )
+    {
+            UCSBDiningCommonsMenuItem menuitem = new UCSBDiningCommonsMenuItem();
+            menuitem.setDiningCommonsCode(diningCommonsCode);
+            menuitem.setName(name);
+            menuitem.setStation(station);
+    
+            UCSBDiningCommonsMenuItem savedMenuItem = ucsbDiningCommonsMenuItemRepository.save(menuitem);
+    
+            return savedMenuItem;
+    }
 
+    @ApiOperation(value = "Delete a UCSB dining commons menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteMenuItem(
+            @ApiParam("id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItemRepository.delete(menuitem);
+        return genericMessage("UCSBDiningCommonsMenuItem with the specific id is deleted".formatted(id));
+    }
+    
+  
 
 }
 
