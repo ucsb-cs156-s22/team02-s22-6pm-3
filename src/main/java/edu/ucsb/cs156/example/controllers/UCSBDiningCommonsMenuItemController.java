@@ -70,7 +70,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
         ucsbDiningCommonsMenuItemRepository.delete(menuitem);
-        return genericMessage("UCSBDiningCommonsMenuItem with the specific id is deleted".formatted(id));
+        return genericMessage("UCSBDiningCommonsMenuItem with the id of %s is deleted".formatted(id));
     }
     
   

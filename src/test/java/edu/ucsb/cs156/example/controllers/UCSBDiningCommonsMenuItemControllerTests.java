@@ -181,7 +181,32 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_delete_a_menuitem() throws Exception {
+                // arrange
 
+                UCSBDiningCommonsMenuItem noodles = UCSBDiningCommonsMenuItem.builder()
+                            .name("Dragon Noodles")
+                            .diningCommonsCode("Carrillo")
+                            .station("Euro")
+                            .build();
+
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(1L))).thenReturn(Optional.of(noodles));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/UCSBDiningCommonsMenuItem?id=1")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(1L);
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).delete(any());
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("UCSBDiningCommonsMenuItem with the id of 1 is deleted", json.get("message"));
+        }
 }
 
 
