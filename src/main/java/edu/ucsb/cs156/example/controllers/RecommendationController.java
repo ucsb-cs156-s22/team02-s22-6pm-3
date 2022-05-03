@@ -27,7 +27,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @Api(description = "Recommendation")
-@RequestMapping("/api/recommendation")
+@RequestMapping("/api/Recommendation")
 @RestController
 @Slf4j
 public class RecommendationController extends ApiController {
