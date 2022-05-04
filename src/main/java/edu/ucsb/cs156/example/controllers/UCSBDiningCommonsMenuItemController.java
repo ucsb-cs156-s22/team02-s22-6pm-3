@@ -37,7 +37,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBDiningCommonsMenuItem getById(
-        @ApiParam("id") @RequestParam Long id){
+        @ApiParam("The id of the menu item") @RequestParam Long id){
             UCSBDiningCommonsMenuItem menuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
             return menuItem;
@@ -46,9 +46,9 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonsMenuItem postMenuItem(
-        @ApiParam("diningCommonsCode")@RequestParam String diningCommonsCode,
-        @ApiParam("name") @RequestParam String name,
-        @ApiParam("station") @RequestParam String station
+        @ApiParam("The Dining Commons the menu item is from")@RequestParam String diningCommonsCode,
+        @ApiParam("Name of the menu item") @RequestParam String name,
+        @ApiParam("The station where the menu item is from") @RequestParam String station
         )
     {
             UCSBDiningCommonsMenuItem menuitem = new UCSBDiningCommonsMenuItem();
@@ -65,7 +65,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteMenuItem(
-            @ApiParam("id") @RequestParam Long id) {
+            @ApiParam("The id of the menu item you want to delete") @RequestParam Long id) {
         UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
@@ -76,7 +76,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public UCSBDiningCommonsMenuItem updateMenuItem(
-        @ApiParam("id") @RequestParam Long id,
+        @ApiParam("The id of the menu item you want to update") @RequestParam Long id,
         @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
 
         UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
