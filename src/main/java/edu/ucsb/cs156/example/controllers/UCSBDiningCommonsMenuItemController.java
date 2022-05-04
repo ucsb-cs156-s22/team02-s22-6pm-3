@@ -46,8 +46,8 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonsMenuItem postMenuItem(
-        @ApiParam("The Dining Commons the menu item is from")@RequestParam String diningCommonsCode,
-        @ApiParam("Name of the menu item") @RequestParam String name,
+        @ApiParam("diningCommonsCode")@RequestParam String diningCommonsCode,
+        @ApiParam("name") @RequestParam String name,
         @ApiParam("station") @RequestParam String station
         )
     {
@@ -65,7 +65,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteMenuItem(
-            @ApiParam("The id of the menu item you want to delete") @RequestParam Long id) {
+            @ApiParam("id") @RequestParam Long id) {
         UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
@@ -76,7 +76,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public UCSBDiningCommonsMenuItem updateMenuItem(
-        @ApiParam("The id of the menu item you want to update") @RequestParam Long id,
+        @ApiParam("id") @RequestParam Long id,
         @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
 
         UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
