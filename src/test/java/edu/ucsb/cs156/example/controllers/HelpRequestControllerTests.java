@@ -94,7 +94,7 @@ public class HelpRequestControllerTests extends ControllerTestCase{
                 .teamId("s22-6pm-3")
                 .tableOrBreakoutRoom("table")
                 .requestTime(ldt)
-                .explanation("bugs in controller")
+                .explanation("bugs-in-controller")
                 .solved(false)
                 .build();
 
@@ -151,8 +151,8 @@ public class HelpRequestControllerTests extends ControllerTestCase{
 
         HelpRequest ucsbDate2 = HelpRequest.builder()
             .requesterEmail("myly@ucsb.edu")
-            .teamId("s22-6pm-3")
-            .tableOrBreakoutRoom("table")
+            .teamId("s22-6pm-31")
+            .tableOrBreakoutRoom("breakoutroom")
             .requestTime(ldt2)
             .explanation("errors")
             .solved(true)
@@ -277,8 +277,8 @@ public class HelpRequestControllerTests extends ControllerTestCase{
 
         HelpRequest helpRequestEdited = HelpRequest.builder()
             .requesterEmail("myly@ucsb.edu")
-            .teamId("s22-6pm-3")
-            .tableOrBreakoutRoom("table")
+            .teamId("s22-6pm-31")
+            .tableOrBreakoutRoom("breakoutroom")
             .requestTime(ldt2)
             .explanation("errors")
             .solved(true)
