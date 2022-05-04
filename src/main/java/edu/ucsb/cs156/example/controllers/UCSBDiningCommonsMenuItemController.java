@@ -61,17 +61,17 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
             return savedMenuItem;
     }
 
-    // @ApiOperation(value = "Delete a UCSB dining commons menu item")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @DeleteMapping("")
-    // public Object deleteMenuItem(
-    //         @ApiParam("id") @RequestParam Long id) {
-    //     UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
-    //             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+    @ApiOperation(value = "Delete a UCSB dining commons menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteMenuItem(
+            @ApiParam("id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem menuitem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
 
-    //     ucsbDiningCommonsMenuItemRepository.delete(menuitem);
-    //     return genericMessage("UCSBDiningCommonsMenuItem with the id of %s is deleted".formatted(id));
-    // }
+        ucsbDiningCommonsMenuItemRepository.delete(menuitem);
+        return genericMessage("UCSBDiningCommonsMenuItem with the id of %s is deleted".formatted(id));
+    }
     // @ApiOperation(value = "Update a single UCSB Dining Commons Menu item")
     // @PreAuthorize("hasRole('ROLE_ADMIN')")
     // @PutMapping("")
