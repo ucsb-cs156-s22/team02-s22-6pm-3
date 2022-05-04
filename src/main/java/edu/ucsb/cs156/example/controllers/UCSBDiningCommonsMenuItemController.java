@@ -37,7 +37,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBDiningCommonsMenuItem getById(
-        @ApiParam("The id of the menu item") @RequestParam Long id){
+        @ApiParam("id") @RequestParam Long id){
             UCSBDiningCommonsMenuItem menuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
             return menuItem;
@@ -48,7 +48,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     public UCSBDiningCommonsMenuItem postMenuItem(
         @ApiParam("The Dining Commons the menu item is from")@RequestParam String diningCommonsCode,
         @ApiParam("Name of the menu item") @RequestParam String name,
-        @ApiParam("The station where the menu item is from") @RequestParam String station
+        @ApiParam("station") @RequestParam String station
         )
     {
             UCSBDiningCommonsMenuItem menuitem = new UCSBDiningCommonsMenuItem();
